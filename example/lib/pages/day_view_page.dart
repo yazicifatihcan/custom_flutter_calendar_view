@@ -29,7 +29,10 @@ class _DayViewPageDemoState extends State<DayViewPageDemo> {
           CalendarControllerProvider.of<Event>(context).controller.add(event);
         },
       ),
-      body: DayViewWidget(),
+      body: DayViewWidget(
+        hourTextStyle: TextStyle(),
+        seperatorColor: Colors.black,
+      ),
     );
   }
 }

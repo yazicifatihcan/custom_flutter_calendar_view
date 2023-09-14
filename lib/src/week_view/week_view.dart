@@ -156,6 +156,10 @@ class WeekView<T extends Object?> extends StatefulWidget {
   /// This method will be called when user long press on calendar.
   final DatePressCallback? onDateLongPress;
 
+  final TextStyle hourTextStyle;
+
+  final Color seperatorColor;
+
   /// Called when user taps on day view page.
   ///
   /// This callback will have a date parameter which
@@ -223,7 +227,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.weekDayDateStringBuilder,
     this.headerStyle = const HeaderStyle(),
     this.safeAreaOption = const SafeAreaOption(),
-    this.fullDayEventBuilder,
+    this.fullDayEventBuilder, required this.hourTextStyle, required this.seperatorColor,
   })  : assert((timeLineOffset) >= 0,
             "timeLineOffset must be greater than or equal to 0"),
         assert(width == null || width > 0,
@@ -418,6 +422,8 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
                             eventTileBuilder: _eventTileBuilder,
                             heightPerMinute: widget.heightPerMinute,
                             hourIndicatorSettings: _hourIndicatorSettings,
+                            hourTextStyle: widget.hourTextStyle,
+                            seperatorColor: widget.seperatorColor,
                             dates: dates,
                             showLiveLine: widget.showLiveTimeLineInAllDays ||
                                 _showLiveTimeIndicator(dates),

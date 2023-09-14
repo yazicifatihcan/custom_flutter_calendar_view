@@ -36,6 +36,7 @@ class LiveTimeIndicator extends StatefulWidget {
   /// Defines height occupied by one minute.
   final double heightPerMinute;
 
+
   /// Widget to display tile line according to current time.
   const LiveTimeIndicator(
       {Key? key,
@@ -43,7 +44,9 @@ class LiveTimeIndicator extends StatefulWidget {
       required this.height,
       required this.timeLineWidth,
       required this.liveTimeIndicatorSettings,
-      required this.heightPerMinute})
+      required this.heightPerMinute,
+      
+      })
       : super(key: key);
 
   @override
@@ -116,6 +119,10 @@ class TimeLine extends StatelessWidget {
   /// Flag to display half hours.
   final bool showHalfHours;
 
+  final TextStyle hourTextStyle;
+
+  final Color seperatorColor;
+
   static DateTime get _date => DateTime.now();
 
   double get _halfHourHeight => hourHeight / 2;
@@ -129,7 +136,7 @@ class TimeLine extends StatelessWidget {
     required this.height,
     required this.timeLineOffset,
     required this.timeLineBuilder,
-    this.showHalfHours = false,
+    this.showHalfHours = false, required this.hourTextStyle, required this.seperatorColor,
   }) : super(key: key);
 
   @override
@@ -150,7 +157,7 @@ class TimeLine extends StatelessWidget {
               right: 0,
               top: hourHeight * i - timeLineOffset,
               bottom: height - (hourHeight * (i + 1)) + timeLineOffset,
-              child: Text(i.getDateTimeFromHour().getFormattedHour())),
+              child: Text(i.getDateTimeFromHour().getFormattedHour(),style: hourTextStyle,)),
             // _timelinePositioned(
             //   topPosition: hourHeight * i - timeLineOffset,
             //   bottomPosition: height - (hourHeight * (i + 1)) + timeLineOffset,
@@ -167,7 +174,7 @@ class TimeLine extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: a==2 ? 16 : 32).copyWith(left: 16),
                   height: 1,
                   width: 1,
-                  color: Colors.black,
+                  color: seperatorColor,
                   ),
                 ),
         ],

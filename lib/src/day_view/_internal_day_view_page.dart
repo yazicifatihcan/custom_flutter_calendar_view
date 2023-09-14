@@ -100,6 +100,12 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
 
   final ScrollController scrollController;
 
+  final TextStyle hourTextStyle;
+
+  final Color seperatorColor;
+  
+  final EdgeInsets cardPadding;
+
   /// Defines a single day page.
   const InternalDayViewPage({
     Key? key,
@@ -128,7 +134,7 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
     required this.scrollController,
     required this.dayDetectorBuilder,
     required this.showHalfHours,
-    required this.halfHourIndicatorSettings,
+    required this.halfHourIndicatorSettings, required this.hourTextStyle, required this.seperatorColor, required this.cardPadding,
   }) : super(key: key);
 
   @override
@@ -137,87 +143,92 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      child: Column(
-        children: [
-          fullDayEventList.isEmpty
-              ? SizedBox.shrink()
-              : fullDayEventBuilder(fullDayEventList, date),
-          Expanded(
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: SizedBox(
-                height: height,
-                width: width,
-                child: Stack(
-                  children: [
-                    // CustomPaint(
-                    //   size: Size(width, height),
-                    //   painter: HourLinePainter(
-                    //     // lineColor: hourIndicatorSettings.color,
-                    //     lineColor: Colors.transparent,
-                    //     lineHeight: hourIndicatorSettings.height,
-                    //     offset: timeLineWidth + hourIndicatorSettings.offset,
-                    //     minuteHeight: heightPerMinute,
-                    //     verticalLineOffset: verticalLineOffset,
-                    //     showVerticalLine: showVerticalLine,
-                    //     lineStyle: hourIndicatorSettings.lineStyle,
-                    //     dashWidth: hourIndicatorSettings.dashWidth,
-                    //     dashSpaceWidth: hourIndicatorSettings.dashSpaceWidth,
-                    //   ),
-                    // ),
+      child: Padding(
+        padding: cardPadding,
+        child: Column(
+          children: [
+            fullDayEventList.isEmpty
+                ? SizedBox.shrink()
+                : fullDayEventBuilder(fullDayEventList, date),
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: SizedBox(
+                  height: height,
+                  width: width,
+                  child: Stack(
+                    children: [
                       // CustomPaint(
                       //   size: Size(width, height),
-                      //   painter: HalfHourLinePainter(
-                      //     lineColor: halfHourIndicatorSettings.color,
-                      //     lineHeight: halfHourIndicatorSettings.height,
-                      //     offset:
-                      //         timeLineWidth + halfHourIndicatorSettings.offset,
+                      //   painter: HourLinePainter(
+                      //     // lineColor: hourIndicatorSettings.color,
+                      //     lineColor: Colors.transparent,
+                      //     lineHeight: hourIndicatorSettings.height,
+                      //     offset: timeLineWidth + hourIndicatorSettings.offset,
                       //     minuteHeight: heightPerMinute,
-                      //     lineStyle: halfHourIndicatorSettings.lineStyle,
-                      //     dashWidth: halfHourIndicatorSettings.dashWidth,
-                      //     dashSpaceWidth:
-                      //         halfHourIndicatorSettings.dashSpaceWidth,
+                      //     verticalLineOffset: verticalLineOffset,
+                      //     showVerticalLine: showVerticalLine,
+                      //     lineStyle: hourIndicatorSettings.lineStyle,
+                      //     dashWidth: hourIndicatorSettings.dashWidth,
+                      //     dashSpaceWidth: hourIndicatorSettings.dashSpaceWidth,
                       //   ),
                       // ),
-                    dayDetectorBuilder(
-                      width: width,
-                      height: height,
-                      heightPerMinute: heightPerMinute,
-                      date: date,
-                      minuteSlotSize: minuteSlotSize,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: EventGenerator<T>(
+                        // CustomPaint(
+                        //   size: Size(width, height),
+                        //   painter: HalfHourLinePainter(
+                        //     lineColor: halfHourIndicatorSettings.color,
+                        //     lineHeight: halfHourIndicatorSettings.height,
+                        //     offset:
+                        //         timeLineWidth + halfHourIndicatorSettings.offset,
+                        //     minuteHeight: heightPerMinute,
+                        //     lineStyle: halfHourIndicatorSettings.lineStyle,
+                        //     dashWidth: halfHourIndicatorSettings.dashWidth,
+                        //     dashSpaceWidth:
+                        //         halfHourIndicatorSettings.dashSpaceWidth,
+                        //   ),
+                        // ),
+                      dayDetectorBuilder(
+                        width: width,
                         height: height,
-                        date: date,
-                        onTileTap: onTileTap,
-                        eventArranger: eventArranger,
-                        events: controller.getEventsOnDay(date),
                         heightPerMinute: heightPerMinute,
-                        eventTileBuilder: eventTileBuilder,
-                        scrollNotifier: scrollNotifier,
-                        width: width -
-                            timeLineWidth -
-                            hourIndicatorSettings.offset -
-                            verticalLineOffset,
+                        date: date,
+                        minuteSlotSize: minuteSlotSize,
                       ),
-                    ),
-                    TimeLine(
-                      height: height,
-                      hourHeight: hourHeight,
-                      timeLineBuilder: timeLineBuilder,
-                      timeLineOffset: timeLineOffset,
-                      timeLineWidth: timeLineWidth,
-                      showHalfHours: showHalfHours,
-                      key: ValueKey(heightPerMinute),
-                    ),
-                  ],
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: EventGenerator<T>(
+                          height: height,
+                          date: date,
+                          onTileTap: onTileTap,
+                          eventArranger: eventArranger,
+                          events: controller.getEventsOnDay(date),
+                          heightPerMinute: heightPerMinute,
+                          eventTileBuilder: eventTileBuilder,
+                          scrollNotifier: scrollNotifier,
+                          width: width -
+                              timeLineWidth -
+                              hourIndicatorSettings.offset -
+                              verticalLineOffset,
+                        ),
+                      ),
+                      TimeLine(
+                        hourTextStyle:hourTextStyle ,
+                        seperatorColor: seperatorColor,
+                        height: height,
+                        hourHeight: hourHeight,
+                        timeLineBuilder: timeLineBuilder,
+                        timeLineOffset: timeLineOffset,
+                        timeLineWidth: timeLineWidth,
+                        showHalfHours: showHalfHours,
+                        key: ValueKey(heightPerMinute),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

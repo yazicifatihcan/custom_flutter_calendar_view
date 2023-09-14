@@ -184,9 +184,15 @@ class DayView<T extends Object?> extends StatefulWidget {
 
   final bool showHalfHours;
 
+  final EdgeInsets cardPadding;
+
   /// Duration from where default day view will be visible
   /// By default it will be Duration(hours:0)
   final Duration startDuration;
+
+  final TextStyle hourTextStyle;
+
+  final Color seperatorColor;
 
   /// Main widget for day view.
   const DayView({
@@ -227,7 +233,7 @@ class DayView<T extends Object?> extends StatefulWidget {
     this.dayDetectorBuilder,
     this.showHalfHours = false,
     this.halfHourIndicatorSettings,
-    this.startDuration = const Duration(hours: 0),
+    this.startDuration = const Duration(hours: 0), required this.hourTextStyle, required this.seperatorColor, required this.cardPadding,
   })  : assert(timeLineOffset >= 0,
             "timeLineOffset must be greater than or equal to 0"),
         assert(width == null || width > 0,
@@ -399,6 +405,9 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                             key: ValueKey(
                                 _hourHeight.toString() + date.toString()),
                             width: _width,
+                            hourTextStyle: widget.hourTextStyle,
+                            cardPadding: widget.cardPadding,
+                            seperatorColor: widget.seperatorColor,
                             liveTimeIndicatorSettings:
                                 _liveTimeIndicatorSettings,
                             timeLineBuilder: _timeLineBuilder,

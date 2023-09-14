@@ -64,6 +64,10 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
   /// Offset for vertical line offset.
   final double verticalLineOffset;
 
+  final TextStyle hourTextStyle;
+
+  final Color seperatorColor;
+
   /// Builder for week day title.
   final DateWidgetBuilder weekDayBuilder;
 
@@ -142,7 +146,7 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
     required this.minuteSlotSize,
     required this.scrollConfiguration,
     required this.fullDayEventBuilder,
-    required this.weekDetectorBuilder,
+    required this.weekDetectorBuilder, required this.hourTextStyle, required this.seperatorColor,
   }) : super(key: key);
 
   @override
@@ -283,6 +287,8 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                       ),
                     ),
                     TimeLine(
+                      hourTextStyle: hourTextStyle,
+                      seperatorColor: seperatorColor,
                       timeLineWidth: timeLineWidth,
                       hourHeight: hourHeight,
                       height: height,

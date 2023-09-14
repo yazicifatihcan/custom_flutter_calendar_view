@@ -10,8 +10,10 @@ import 'week_view_widget.dart';
 
 class CalendarViews extends StatelessWidget {
   final CalendarView view;
+  final TextStyle hourTextStyle;
+  final Color seperatorColor;
 
-  const CalendarViews({Key? key, this.view = CalendarView.month})
+  const CalendarViews({Key? key, this.view = CalendarView.month, required this.hourTextStyle, required this.seperatorColor})
       : super(key: key);
 
   final _breakPoint = 490.0;
@@ -32,10 +34,14 @@ class CalendarViews extends StatelessWidget {
               )
             : view == CalendarView.day
                 ? DayViewWidget(
+                  hourTextStyle: hourTextStyle,
                     width: width,
+                    seperatorColor: seperatorColor,
                   )
                 : WeekViewWidget(
+                    hourTextStyle: hourTextStyle,
                     width: width,
+                    seperatorColor: seperatorColor,
                   ),
       ),
     );

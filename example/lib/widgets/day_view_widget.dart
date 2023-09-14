@@ -6,16 +6,21 @@ import '../model/event.dart';
 class DayViewWidget extends StatelessWidget {
   final GlobalKey<DayViewState>? state;
   final double? width;
+  final TextStyle hourTextStyle;
+  final Color seperatorColor;
 
   const DayViewWidget({
     Key? key,
     this.state,
-    this.width,
+    this.width, required this.hourTextStyle, required this.seperatorColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DayView<Event>(
+      cardPadding: EdgeInsets.all(32),
+      hourTextStyle: hourTextStyle,
+      seperatorColor: seperatorColor,
       key: state,
       width: width,
       startDuration: Duration(hours: 8),
