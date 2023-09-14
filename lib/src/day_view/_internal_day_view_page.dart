@@ -150,35 +150,35 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
                 width: width,
                 child: Stack(
                   children: [
-                    CustomPaint(
-                      size: Size(width, height),
-                      painter: HourLinePainter(
-                        lineColor: hourIndicatorSettings.color,
-                        lineHeight: hourIndicatorSettings.height,
-                        offset: timeLineWidth + hourIndicatorSettings.offset,
-                        minuteHeight: heightPerMinute,
-                        verticalLineOffset: verticalLineOffset,
-                        showVerticalLine: showVerticalLine,
-                        lineStyle: hourIndicatorSettings.lineStyle,
-                        dashWidth: hourIndicatorSettings.dashWidth,
-                        dashSpaceWidth: hourIndicatorSettings.dashSpaceWidth,
-                      ),
-                    ),
-                    if (showHalfHours)
-                      CustomPaint(
-                        size: Size(width, height),
-                        painter: HalfHourLinePainter(
-                          lineColor: halfHourIndicatorSettings.color,
-                          lineHeight: halfHourIndicatorSettings.height,
-                          offset:
-                              timeLineWidth + halfHourIndicatorSettings.offset,
-                          minuteHeight: heightPerMinute,
-                          lineStyle: halfHourIndicatorSettings.lineStyle,
-                          dashWidth: halfHourIndicatorSettings.dashWidth,
-                          dashSpaceWidth:
-                              halfHourIndicatorSettings.dashSpaceWidth,
-                        ),
-                      ),
+                    // CustomPaint(
+                    //   size: Size(width, height),
+                    //   painter: HourLinePainter(
+                    //     // lineColor: hourIndicatorSettings.color,
+                    //     lineColor: Colors.transparent,
+                    //     lineHeight: hourIndicatorSettings.height,
+                    //     offset: timeLineWidth + hourIndicatorSettings.offset,
+                    //     minuteHeight: heightPerMinute,
+                    //     verticalLineOffset: verticalLineOffset,
+                    //     showVerticalLine: showVerticalLine,
+                    //     lineStyle: hourIndicatorSettings.lineStyle,
+                    //     dashWidth: hourIndicatorSettings.dashWidth,
+                    //     dashSpaceWidth: hourIndicatorSettings.dashSpaceWidth,
+                    //   ),
+                    // ),
+                      // CustomPaint(
+                      //   size: Size(width, height),
+                      //   painter: HalfHourLinePainter(
+                      //     lineColor: halfHourIndicatorSettings.color,
+                      //     lineHeight: halfHourIndicatorSettings.height,
+                      //     offset:
+                      //         timeLineWidth + halfHourIndicatorSettings.offset,
+                      //     minuteHeight: heightPerMinute,
+                      //     lineStyle: halfHourIndicatorSettings.lineStyle,
+                      //     dashWidth: halfHourIndicatorSettings.dashWidth,
+                      //     dashSpaceWidth:
+                      //         halfHourIndicatorSettings.dashSpaceWidth,
+                      //   ),
+                      // ),
                     dayDetectorBuilder(
                       width: width,
                       height: height,
@@ -212,16 +212,6 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
                       showHalfHours: showHalfHours,
                       key: ValueKey(heightPerMinute),
                     ),
-                    if (showLiveLine && liveTimeIndicatorSettings.height > 0)
-                      IgnorePointer(
-                        child: LiveTimeIndicator(
-                          liveTimeIndicatorSettings: liveTimeIndicatorSettings,
-                          width: width,
-                          height: height,
-                          heightPerMinute: heightPerMinute,
-                          timeLineWidth: timeLineWidth,
-                        ),
-                      ),
                   ],
                 ),
               ),

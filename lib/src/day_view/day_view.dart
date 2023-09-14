@@ -380,7 +380,6 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _dayTitleBuilder(_currentDate),
               Expanded(
                 child: DecoratedBox(
                   decoration: BoxDecoration(color: widget.backgroundColor),

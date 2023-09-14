@@ -10,6 +10,7 @@ import '../calendar_event_data.dart';
 import '../constants.dart';
 import '../enumerations.dart';
 import '../event_arrangers/event_arrangers.dart';
+import '../extension/extensions.dart';
 import '../extensions.dart';
 import '../modals.dart';
 import '../painters.dart';
@@ -118,6 +119,7 @@ class TimeLine extends StatelessWidget {
   static DateTime get _date => DateTime.now();
 
   double get _halfHourHeight => hourHeight / 2;
+  double get _minuteHeight => hourHeight / 60;
 
   /// Time line to display time at left side of day or week view.
   const TimeLine({
@@ -142,52 +144,37 @@ class TimeLine extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          for (int i = 1; i < Constants.hoursADay; i++)
-            _timelinePositioned(
-              topPosition: hourHeight * i - timeLineOffset,
-              bottomPosition: height - (hourHeight * (i + 1)) + timeLineOffset,
-              hour: i,
-            ),
-          if (showHalfHours)
+          for (int i = 0; i < Constants.hoursADay; i++)
+            Positioned(
+              left: 16,
+              right: 0,
+              top: hourHeight * i - timeLineOffset,
+              bottom: height - (hourHeight * (i + 1)) + timeLineOffset,
+              child: Text(i.getDateTimeFromHour().getFormattedHour())),
+            // _timelinePositioned(
+            //   topPosition: hourHeight * i - timeLineOffset,
+            //   bottomPosition: height - (hourHeight * (i + 1)) + timeLineOffset,
+            //   hour: i,
+            // ),
+          if (true)
             for (int i = 0; i < Constants.hoursADay; i++)
-              _timelinePositioned(
-                topPosition: hourHeight * i - timeLineOffset + _halfHourHeight,
-                bottomPosition:
-                    height - (hourHeight * (i + 1)) + timeLineOffset,
-                hour: i,
-                minutes: 30,
-              ),
+            for(int a = 1; a < 4; a++)
+            Positioned(
+                top: hourHeight * i - timeLineOffset + (a==1 ?  _minuteHeight*15 : a==2 ? _minuteHeight*30 : _minuteHeight*45),
+                left: 0,
+                right: 0,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: a==2 ? 16 : 32).copyWith(left: 16),
+                  height: 1,
+                  width: 1,
+                  color: Colors.black,
+                  ),
+                ),
         ],
       ),
     );
   }
 
-  Widget _timelinePositioned({
-    required double topPosition,
-    required double bottomPosition,
-    required int hour,
-    int minutes = 0,
-  }) {
-    return Positioned(
-      top: topPosition,
-      left: 0,
-      right: 0,
-      bottom: bottomPosition,
-      child: Container(
-        height: hourHeight,
-        width: timeLineWidth,
-        child: timeLineBuilder.call(
-          DateTime(
-            _date.year,
-            _date.month,
-            _date.day,
-            hour,
-            minutes,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 /// A widget that display event tiles in day/week view.
