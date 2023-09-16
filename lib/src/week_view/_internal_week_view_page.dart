@@ -241,7 +241,7 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                               filteredDates.length,
                               (index) => Container(
                                 decoration: BoxDecoration(
-                                  color: index%2==0 ? Colors.blue : Colors.red,
+                                  color: index%2==0 ? odDayColor : doubleDayColor,
                                   border: Border(
                                     right: BorderSide(
                                       color: Colors.transparent,
