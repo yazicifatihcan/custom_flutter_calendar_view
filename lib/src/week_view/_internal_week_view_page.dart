@@ -110,6 +110,10 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
   /// where events are not there.
   final MinuteSlotSize minuteSlotSize;
 
+  final Color odDayColor;
+
+  final Color doubleDayColor;
+
   final EventScrollConfiguration scrollConfiguration;
 
   /// Display full day events.
@@ -146,6 +150,8 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
     required this.minuteSlotSize,
     required this.scrollConfiguration,
     required this.fullDayEventBuilder,
+    required this.odDayColor,
+    required this.doubleDayColor,
     required this.weekDetectorBuilder, required this.hourTextStyle, required this.seperatorColor,
   }) : super(key: key);
 
@@ -166,7 +172,6 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                 SizedBox(
                   height: weekTitleHeight,
                   width: timeLineWidth + hourIndicatorSettings.offset,
-                  child: weekNumberBuilder.call(filteredDates[0]),
                 ),
                 ...List.generate(
                   filteredDates.length,
@@ -180,10 +185,6 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                 )
               ],
             ),
-          ),
-          Divider(
-            thickness: 1,
-            height: 1,
           ),
           SizedBox(
             width: width,
@@ -218,25 +219,17 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                 width: width,
                 child: Stack(
                   children: [
-                    CustomPaint(
-                      size: Size(width, height),
-                      painter: HourLinePainter(
-                        lineColor: hourIndicatorSettings.color,
-                        lineHeight: hourIndicatorSettings.height,
-                        offset: timeLineWidth + hourIndicatorSettings.offset,
-                        minuteHeight: heightPerMinute,
-                        verticalLineOffset: verticalLineOffset,
-                        showVerticalLine: showVerticalLine,
-                      ),
-                    ),
-                    if (showLiveLine && liveTimeIndicatorSettings.height > 0)
-                      LiveTimeIndicator(
-                        liveTimeIndicatorSettings: liveTimeIndicatorSettings,
-                        width: width,
-                        height: height,
-                        heightPerMinute: heightPerMinute,
-                        timeLineWidth: timeLineWidth,
-                      ),
+                    // CustomPaint(
+                    //   size: Size(width, height),
+                    //   painter: HourLinePainter(
+                    //     lineColor: Colors.red,
+                    //     lineHeight: hourIndicatorSettings.height,
+                    //     offset: timeLineWidth + hourIndicatorSettings.offset,
+                    //     minuteHeight: heightPerMinute,
+                    //     verticalLineOffset: verticalLineOffset,
+                    //     showVerticalLine: showVerticalLine,
+                    //   ),
+                    // ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: SizedBox(
@@ -248,9 +241,10 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                               filteredDates.length,
                               (index) => Container(
                                 decoration: BoxDecoration(
+                                  color: index%2==0 ? Colors.blue : Colors.red,
                                   border: Border(
                                     right: BorderSide(
-                                      color: hourIndicatorSettings.color,
+                                      color: Colors.transparent,
                                       width: hourIndicatorSettings.height,
                                     ),
                                   ),
@@ -287,6 +281,8 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                       ),
                     ),
                     TimeLine(
+                      showOnlyFirstCharOfHour: true,
+                      showTimeSeperators: false,
                       hourTextStyle: hourTextStyle,
                       seperatorColor: seperatorColor,
                       timeLineWidth: timeLineWidth,

@@ -38,6 +38,8 @@ class _WebHomePageState extends State<WebHomePage> {
                     MediaQuery.of(context).size.height),
               ),
               child: CalendarViews(
+                doubleDayColor: Colors.red,
+                odDayColor: Colors.blue,
                 hourTextStyle: TextStyle(),
         seperatorColor: Colors.black,
                 key: ValueKey(MediaQuery.of(context).size.width),

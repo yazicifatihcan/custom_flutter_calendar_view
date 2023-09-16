@@ -138,6 +138,8 @@ class MonthView<T extends Object?> extends StatefulWidget {
   /// Option for SafeArea.
   final SafeAreaOption safeAreaOption;
 
+  final TextStyle dayStyle;
+
   /// Main [Widget] to display month view.
   const MonthView({
     Key? key,
@@ -165,7 +167,7 @@ class MonthView<T extends Object?> extends StatefulWidget {
     this.dateStringBuilder,
     this.weekDayStringBuilder,
     this.headerStyle = const HeaderStyle(),
-    this.safeAreaOption = const SafeAreaOption(),
+    this.safeAreaOption = const SafeAreaOption(), required this.dayStyle,
   }) : super(key: key);
 
   @override
@@ -217,7 +219,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
     // Initialize page controller to control page actions.
     _pageController = PageController(initialPage: _currentIndex);
 
-    _assignBuilders();
+    _assignBuilders(widget.dayStyle);
   }
 
   @override
@@ -265,7 +267,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
     }
 
     // Update builders and callbacks
-    _assignBuilders();
+    _assignBuilders(widget.dayStyle);
 
     updateViewDimensions();
   }
@@ -294,6 +296,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: _onPageChange,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (_, index) {
                   final date = DateTime(_minDate.year, _minDate.month + index);
                   final weekDays = date.datesOfWeek(start: widget.startDay);
@@ -389,13 +392,13 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
     return _cellWidth / _cellHeight;
   }
 
-  void _assignBuilders() {
+  void _assignBuilders(TextStyle dayStyle) {
     // Initialize cell builder. Assign default if widget.cellBuilder is null.
     _cellBuilder = widget.cellBuilder ?? _defaultCellBuilder;
 
     // Initialize week builder. Assign default if widget.weekBuilder is null.
     // This widget will come under header this will display week days.
-    _weekBuilder = widget.weekDayBuilder ?? _defaultWeekDayBuilder;
+    _weekBuilder = widget.weekDayBuilder ?? (index)=>_defaultWeekDayBuilder(index,dayStyle);
 
     // Initialize header builder. Assign default if widget.headerBuilder
     // is null.
@@ -481,10 +484,11 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
   }
 
   /// Default builder for week line.
-  Widget _defaultWeekDayBuilder(int index) {
+  Widget _defaultWeekDayBuilder(int index,TextStyle dayStyle) {
     return WeekDayTile(
       dayIndex: index,
       weekDayStringBuilder: widget.weekDayStringBuilder,
+      textStyle: dayStyle,
     );
   }
 

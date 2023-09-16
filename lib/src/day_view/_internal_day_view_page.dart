@@ -212,7 +212,9 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
                         ),
                       ),
                       TimeLine(
+                        showOnlyFirstCharOfHour: false,
                         hourTextStyle:hourTextStyle ,
+                        showTimeSeperators: true,
                         seperatorColor: seperatorColor,
                         height: height,
                         hourHeight: hourHeight,

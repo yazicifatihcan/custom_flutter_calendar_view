@@ -15,9 +15,14 @@ DateTime getDateTimeFromHour (){
 
 extension DateTimeExtension on DateTime {
 
-  String getFormattedHour(){
+  String getFormattedHour(bool showOnlyFirst){
     final formatter = DateFormat('HH:mm');
-    return formatter.format(this);
+    if(showOnlyFirst){
+      final values = formatter.format(this).split(':');
+      return int.parse(values[0]).toString();
+    }else{
+      return formatter.format(this);
+    }
   }
 
 

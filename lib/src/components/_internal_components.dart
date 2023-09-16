@@ -119,6 +119,10 @@ class TimeLine extends StatelessWidget {
   /// Flag to display half hours.
   final bool showHalfHours;
 
+  final bool showTimeSeperators;
+  
+  final bool showOnlyFirstCharOfHour;
+
   final TextStyle hourTextStyle;
 
   final Color seperatorColor;
@@ -136,7 +140,7 @@ class TimeLine extends StatelessWidget {
     required this.height,
     required this.timeLineOffset,
     required this.timeLineBuilder,
-    this.showHalfHours = false, required this.hourTextStyle, required this.seperatorColor,
+    this.showHalfHours = false, required this.hourTextStyle, required this.seperatorColor, required this.showTimeSeperators, required this.showOnlyFirstCharOfHour,
   }) : super(key: key);
 
   @override
@@ -157,13 +161,13 @@ class TimeLine extends StatelessWidget {
               right: 0,
               top: hourHeight * i - timeLineOffset,
               bottom: height - (hourHeight * (i + 1)) + timeLineOffset,
-              child: Text(i.getDateTimeFromHour().getFormattedHour(),style: hourTextStyle,)),
+              child: Text(i.getDateTimeFromHour().getFormattedHour(showOnlyFirstCharOfHour),style: hourTextStyle,)),
             // _timelinePositioned(
             //   topPosition: hourHeight * i - timeLineOffset,
             //   bottomPosition: height - (hourHeight * (i + 1)) + timeLineOffset,
             //   hour: i,
             // ),
-          if (true)
+          if (showTimeSeperators)
             for (int i = 0; i < Constants.hoursADay; i++)
             for(int a = 1; a < 4; a++)
             Positioned(

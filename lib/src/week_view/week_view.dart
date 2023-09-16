@@ -184,6 +184,14 @@ class WeekView<T extends Object?> extends StatefulWidget {
   /// Option for SafeArea.
   final SafeAreaOption safeAreaOption;
 
+  final TextStyle weekDayStyle;
+  
+  final Color odDayColor;
+
+  final Color doubleDayColor;
+
+  
+
   /// Display full day event builder.
   final FullDayEventBuilder<T>? fullDayEventBuilder;
 
@@ -227,7 +235,9 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.weekDayDateStringBuilder,
     this.headerStyle = const HeaderStyle(),
     this.safeAreaOption = const SafeAreaOption(),
-    this.fullDayEventBuilder, required this.hourTextStyle, required this.seperatorColor,
+    required this.odDayColor,
+    required this.doubleDayColor,
+    this.fullDayEventBuilder, required this.hourTextStyle, required this.seperatorColor, required this.weekDayStyle,
   })  : assert((timeLineOffset) >= 0,
             "timeLineOffset must be greater than or equal to 0"),
         assert(width == null || width > 0,
@@ -269,7 +279,6 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
 
   late DateWidgetBuilder _timeLineBuilder;
   late EventTileBuilder<T> _eventTileBuilder;
-  late WeekPageHeaderBuilder _weekHeaderBuilder;
   late DateWidgetBuilder _weekDayBuilder;
   late WeekNumberBuilder _weekNumberBuilder;
   late FullDayEventBuilder<T> _fullDayEventBuilder;
@@ -309,7 +318,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _pageController = PageController(initialPage: _currentIndex);
     _eventArranger = widget.eventArranger ?? SideEventArranger<T>();
 
-    _assignBuilders();
+    _assignBuilders(widget.weekDayStyle);
   }
 
   @override
@@ -362,7 +371,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _calculateHeights();
 
     // Update builders and callbacks
-    _assignBuilders();
+    _assignBuilders(widget.weekDayStyle);
   }
 
   @override
@@ -385,7 +394,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _weekHeaderBuilder(_currentStartDate, _currentEndDate),
+              // _weekHeaderBuilder(_currentStartDate, _currentEndDate),
               Expanded(
                 child: DecoratedBox(
                   decoration: BoxDecoration(color: widget.backgroundColor),
@@ -396,6 +405,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
                       itemCount: _totalWeeks,
                       controller: _pageController,
                       onPageChanged: _onPageChange,
+                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (_, index) {
                         final dates = DateTime(_minDate.year, _minDate.month,
                                 _minDate.day + (index * DateTime.daysPerWeek))
@@ -404,6 +414,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
                         return ValueListenableBuilder(
                           valueListenable: _scrollConfiguration,
                           builder: (_, __, ___) => InternalWeekViewPage<T>(
+                            
                             key: ValueKey(
                                 _hourHeight.toString() + dates[0].toString()),
                             height: _height,
@@ -413,6 +424,8 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
                             weekDayBuilder: _weekDayBuilder,
                             weekNumberBuilder: _weekNumberBuilder,
                             weekDetectorBuilder: _weekDetectorBuilder,
+                            odDayColor: widget.odDayColor,
+                            doubleDayColor: widget.doubleDayColor,
                             liveTimeIndicatorSettings:
                                 _liveTimeIndicatorSettings,
                             timeLineBuilder: _timeLineBuilder,
@@ -523,12 +536,10 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _height = _hourHeight * Constants.hoursADay;
   }
 
-  void _assignBuilders() {
+  void _assignBuilders(TextStyle weekDayStyle) {
     _timeLineBuilder = widget.timeLineBuilder ?? _defaultTimeLineBuilder;
     _eventTileBuilder = widget.eventTileBuilder ?? _defaultEventTileBuilder;
-    _weekHeaderBuilder =
-        widget.weekPageHeaderBuilder ?? _defaultWeekPageHeaderBuilder;
-    _weekDayBuilder = widget.weekDayBuilder ?? _defaultWeekDayBuilder;
+    _weekDayBuilder = widget.weekDayBuilder ?? (index)=>_defaultWeekDayBuilder(index,weekDayStyle);
     _weekDetectorBuilder =
         widget.weekDetectorBuilder ?? _defaultPressDetectorBuilder;
     _weekNumberBuilder = widget.weekNumberBuilder ?? _defaultWeekNumberBuilder;
@@ -639,18 +650,9 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   }
 
   /// Default builder for week line.
-  Widget _defaultWeekDayBuilder(DateTime date) {
+  Widget _defaultWeekDayBuilder(DateTime date,TextStyle weekDayStyle) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(widget.weekDayStringBuilder?.call(date.weekday - 1) ??
-              Constants.weekTitles[date.weekday - 1]),
-          Text(widget.weekDayDateStringBuilder?.call(date.day) ??
-              date.day.toString()),
-        ],
-      ),
+      child: Text(Constants.weekTitles[date.weekday - 1],style: weekDayStyle,),
     );
   }
 

@@ -12,8 +12,10 @@ class CalendarViews extends StatelessWidget {
   final CalendarView view;
   final TextStyle hourTextStyle;
   final Color seperatorColor;
+  final Color doubleDayColor;
+  final Color odDayColor;
 
-  const CalendarViews({Key? key, this.view = CalendarView.month, required this.hourTextStyle, required this.seperatorColor})
+  const CalendarViews({Key? key, this.view = CalendarView.month, required this.hourTextStyle, required this.seperatorColor, required this.doubleDayColor, required this.odDayColor})
       : super(key: key);
 
   final _breakPoint = 490.0;
@@ -39,6 +41,8 @@ class CalendarViews extends StatelessWidget {
                     seperatorColor: seperatorColor,
                   )
                 : WeekViewWidget(
+                  odDayColor: odDayColor,
+                  doubleDayColor: doubleDayColor,
                     hourTextStyle: hourTextStyle,
                     width: width,
                     seperatorColor: seperatorColor,
