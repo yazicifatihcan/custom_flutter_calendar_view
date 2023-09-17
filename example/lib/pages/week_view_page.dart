@@ -23,6 +23,7 @@ class _WeekViewDemoState extends State<WeekViewDemo> {
         onPressed: _addEvent,
       ),
       body: WeekViewWidget(
+        weekSubtitleBuilder: (date)=>Text('a'),
         odDayColor: Colors.red,
         doubleDayColor: Colors.blue,
         hourTextStyle: TextStyle(),

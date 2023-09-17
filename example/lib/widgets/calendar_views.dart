@@ -42,6 +42,7 @@ class CalendarViews extends StatelessWidget {
                   )
                 : WeekViewWidget(
                   odDayColor: odDayColor,
+                  weekSubtitleBuilder: (date)=>Text('a'),
                   doubleDayColor: doubleDayColor,
                     hourTextStyle: hourTextStyle,
                     width: width,

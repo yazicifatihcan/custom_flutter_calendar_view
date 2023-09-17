@@ -185,6 +185,8 @@ class WeekView<T extends Object?> extends StatefulWidget {
   final SafeAreaOption safeAreaOption;
 
   final TextStyle weekDayStyle;
+
+  final Widget Function(DateTime) weekSubtitleBuilder;
   
   final Color odDayColor;
 
@@ -237,7 +239,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.safeAreaOption = const SafeAreaOption(),
     required this.odDayColor,
     required this.doubleDayColor,
-    this.fullDayEventBuilder, required this.hourTextStyle, required this.seperatorColor, required this.weekDayStyle,
+    this.fullDayEventBuilder, required this.hourTextStyle, required this.seperatorColor, required this.weekDayStyle, required this.weekSubtitleBuilder,
   })  : assert((timeLineOffset) >= 0,
             "timeLineOffset must be greater than or equal to 0"),
         assert(width == null || width > 0,
@@ -318,7 +320,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _pageController = PageController(initialPage: _currentIndex);
     _eventArranger = widget.eventArranger ?? SideEventArranger<T>();
 
-    _assignBuilders(widget.weekDayStyle);
+    _assignBuilders(widget.weekDayStyle,widget.weekSubtitleBuilder);
   }
 
   @override
@@ -371,7 +373,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _calculateHeights();
 
     // Update builders and callbacks
-    _assignBuilders(widget.weekDayStyle);
+    _assignBuilders(widget.weekDayStyle,widget.weekSubtitleBuilder);
   }
 
   @override
@@ -536,10 +538,10 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _height = _hourHeight * Constants.hoursADay;
   }
 
-  void _assignBuilders(TextStyle weekDayStyle) {
+  void _assignBuilders(TextStyle weekDayStyle,Widget Function(DateTime) weekSubtitleBuilder) {
     _timeLineBuilder = widget.timeLineBuilder ?? _defaultTimeLineBuilder;
     _eventTileBuilder = widget.eventTileBuilder ?? _defaultEventTileBuilder;
-    _weekDayBuilder = widget.weekDayBuilder ?? (index)=>_defaultWeekDayBuilder(index,weekDayStyle);
+    _weekDayBuilder = widget.weekDayBuilder ?? (index)=>_defaultWeekDayBuilder(index,weekDayStyle,weekSubtitleBuilder);
     _weekDetectorBuilder =
         widget.weekDetectorBuilder ?? _defaultPressDetectorBuilder;
     _weekNumberBuilder = widget.weekNumberBuilder ?? _defaultWeekNumberBuilder;
@@ -650,9 +652,14 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   }
 
   /// Default builder for week line.
-  Widget _defaultWeekDayBuilder(DateTime date,TextStyle weekDayStyle) {
+  Widget _defaultWeekDayBuilder(DateTime date,TextStyle weekDayStyle,Widget Function(DateTime) weekSubtitleBuilder) {
     return Center(
-      child: Text(Constants.weekTitles[date.weekday - 1],style: weekDayStyle,),
+      child: Column(
+        children: [
+          Text(Constants.weekTitles[date.weekday - 1],style: weekDayStyle,),
+          weekSubtitleBuilder(date)
+        ],
+      ),
     );
   }
 

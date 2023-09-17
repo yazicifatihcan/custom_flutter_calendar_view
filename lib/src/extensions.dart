@@ -3,6 +3,7 @@
 // that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../calendar_view.dart';
 
@@ -12,6 +13,12 @@ extension DateTimeExtensions on DateTime {
   /// Compares only [day], [month] and [year] of [DateTime].
   bool compareWithoutTime(DateTime date) {
     return day == date.day && month == date.month && year == date.year;
+  }
+
+  DateTime getRawDateTime() {
+    final format = DateFormat('yyyy-MM-dd');
+    final date = format.parse(format.format(this));
+    return date;
   }
 
   /// Gets difference of months between [date] and calling object.
