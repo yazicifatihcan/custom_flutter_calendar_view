@@ -657,7 +657,9 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
       child: Column(
         children: [
           Text(Constants.weekTitles[date.weekday - 1],style: weekDayStyle,),
-          weekSubtitleBuilder(date)
+          Spacer(),
+          weekSubtitleBuilder(date),
+          Spacer(),
         ],
       ),
     );
