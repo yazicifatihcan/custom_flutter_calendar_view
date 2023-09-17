@@ -15,7 +15,7 @@ extension DateTimeExtensions on DateTime {
     return day == date.day && month == date.month && year == date.year;
   }
 
-  DateTime getRawDateTime() {
+  DateTime getRawDateTimeSolid() {
     final format = DateFormat('yyyy-MM-dd');
     final date = format.parse(format.format(this));
     return date;
